@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/kgrvamsi/throne/conf"
 	"github.com/kgrvamsi/throne/logger"
 
@@ -10,7 +11,10 @@ import (
 var config = conf.GetConf()
 
 func init() {
-	log := logger.GetLogger(config.Log.LogLevel)
+	log, err := logger.GetLogger(config.Log.LogLevel, "elasticsearch")
+	if err != nil {
+		fmt.Println(err)
+	}
 	if config.Log.LogLevel == "production" {
 		gin.SetMode("release")
 	}

@@ -16,8 +16,14 @@ type DefaultInfo struct {
 }
 
 type LogInfo struct {
-	Type     string `toml:"type"`
-	LogLevel string `toml:"log_level"`
+	Type        string `toml:"type"`
+	LogLevel    string `toml:"log_level"`
+	ESUrl       string `toml:"es_url"`
+	ESHttps     bool   `toml:"es_https"`
+	ESPort      string `toml:"es_port"`
+	ESUsername  string `toml:"es_username"`
+	ESPassword  string `toml:"es_password"`
+	ESIndexName string `toml:"es_index_name"`
 }
 
 //GetConf ...Fetch the configuration from the config.toml file

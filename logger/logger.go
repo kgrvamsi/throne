@@ -1,27 +1,58 @@
 package logger
 
 import (
+	"fmt"
+	"github.com/kgrvamsi/throne/conf"
 	"os"
 
 	"github.com/sirupsen/logrus"
+	"github.com/sohlich/elogrus"
+	elastic "gopkg.in/olivere/elastic.v5"
 )
 
 //GetLogger ... Will return the logging object
-func GetLogger(envType string) logrus.Logger {
-	var logger logrus.Logger
+func GetLogger(envType string, logType string) (*logrus.Logger, error) {
+	var (
+		logger    = logrus.New()
+		config    = conf.GetConf()
+		clientUrl string
+	)
 
 	if envType == "production" {
-		// Log as JSON instead of the default ASCII formatter.
-		logger.SetFormatter(&logrus.TextFormatter{})
+		if logType == "local" {
+			// Log as JSON instead of the default ASCII formatter.
+			logger.SetFormatter(&logrus.TextFormatter{})
 
-		// Output to stdout instead of the default stderr
-		// Can be any io.Writer, see below for File example
-		logger.SetOutput(os.Stdout)
+			// Output to stdout instead of the default stderr
+			// Can be any io.Writer, see below for File example
+			logger.SetOutput(os.Stdout)
 
-		// Only log the warning severity or above.
-		logger.SetLevel(logrus.InfoLevel)
+			// Only log the warning severity or above.
+			logger.SetLevel(logrus.InfoLevel)
 
-		return logger
+			return logger, nil
+		} else if logType == "elasticsearch" {
+
+			if config.Log.ESHttps {
+				clientUrl = fmt.Sprintf("https://%s:%s", config.Log.ESUrl, config.Log.ESPort)
+			} else {
+				clientUrl = fmt.Sprintf("http://%s:%s", config.Log.ESUrl, config.Log.ESPort)
+			}
+
+			client, err := elastic.NewClient(elastic.SetSniff(false),
+				elastic.SetBasicAuth(config.Log.ESUsername, config.Log.ESPassword),
+				elastic.SetURL(clientUrl))
+			if err != nil {
+				return nil, err
+			}
+			hook, err := elogrus.NewElasticHook(client, clientUrl, logrus.DebugLevel, config.Log.ESIndexName)
+			if err != nil {
+				return nil, err
+			}
+			logger.Hooks.Add(hook)
+
+			return logger, nil
+		}
 	} else if envType == "development" {
 		// Log as JSON instead of the default ASCII formatter.
 		logger.SetFormatter(&logrus.TextFormatter{})
@@ -33,7 +64,7 @@ func GetLogger(envType string) logrus.Logger {
 		// Only log the warning severity or above.
 		logger.SetLevel(logrus.DebugLevel)
 
-		return logger
+		return logger, nil
 	}
-	return logger
+	return logger, nil
 }

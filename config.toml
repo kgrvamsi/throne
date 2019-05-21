@@ -1,5 +1,13 @@
 [default]
 port="8080"
 [log]
-type=""
+#Log Type Default Values would be
+# local,elasticsearch,sentry
+log_type="local"
 log_level="production"
+es_url="localhost"
+es_https=true
+es_port="443"
+es_username="root"
+es_password="password"
+es_index_name="throne"
