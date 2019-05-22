@@ -16,7 +16,7 @@ type DefaultInfo struct {
 }
 
 type LogInfo struct {
-	Type        string `toml:"type"`
+	LogType     string `toml:"log_type"`
 	LogLevel    string `toml:"log_level"`
 	ESUrl       string `toml:"es_url"`
 	ESHttps     bool   `toml:"es_https"`

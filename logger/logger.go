@@ -2,8 +2,9 @@ package logger
 
 import (
 	"fmt"
-	"github.com/kgrvamsi/throne/conf"
 	"os"
+
+	"github.com/kgrvamsi/throne/conf"
 
 	"github.com/sirupsen/logrus"
 	"github.com/sohlich/elogrus"
@@ -21,7 +22,10 @@ func GetLogger(envType string, logType string) (*logrus.Logger, error) {
 	if envType == "production" {
 		if logType == "local" {
 			// Log as JSON instead of the default ASCII formatter.
-			logger.SetFormatter(&logrus.TextFormatter{})
+			logger.SetFormatter(&logrus.TextFormatter{
+				TimestampFormat: "2006-01-02T15:04:05.000",
+				FullTimestamp:   true,
+			})
 
 			// Output to stdout instead of the default stderr
 			// Can be any io.Writer, see below for File example
@@ -55,7 +59,10 @@ func GetLogger(envType string, logType string) (*logrus.Logger, error) {
 		}
 	} else if envType == "development" {
 		// Log as JSON instead of the default ASCII formatter.
-		logger.SetFormatter(&logrus.TextFormatter{})
+		logger.SetFormatter(&logrus.TextFormatter{
+			TimestampFormat: "2006-01-02T15:04:05.000",
+			FullTimestamp:   true,
+		})
 
 		// Output to stdout instead of the default stderr
 		// Can be any io.Writer, see below for File example
