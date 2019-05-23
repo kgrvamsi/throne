@@ -6,15 +6,18 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
+//Config ... Creating config.toml struct object
 type Config struct {
 	Default DefaultInfo
 	Log     LogInfo
 }
 
+//DefaultInfo ...  Fetch all the parameters under default key
 type DefaultInfo struct {
 	Port string `toml:"port"`
 }
 
+//LogInfo ... Fetch all the parameters under log key
 type LogInfo struct {
 	LogType     string `toml:"log_type"`
 	LogLevel    string `toml:"log_level"`

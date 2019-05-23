@@ -1,7 +1,7 @@
 # Project Throne
 ![Project Throne](https://i.imgur.com/8LhlSYv.png)
 
-[![License][License-Image]][License-Url] [![Documentation Status](https://readthedocs.org/projects/throne/badge/?version=latest)](https://throne.readthedocs.io/en/latest/?badge=latest)
+[![Go Report Card](https://goreportcard.com/badge/github.com/kgrvamsi/throne)](https://goreportcard.com/report/github.com/kgrvamsi/throne) [![License][License-Image]][License-Url] [![Documentation Status](https://readthedocs.org/projects/throne/badge/?version=latest)](https://throne.readthedocs.io/en/latest/?badge=latest)
 
 Centralized Authentication Server which supports commonly used
 Authentication Strategies at Server Level and support the core logic of Authentication for clients over standardized libraries for different programming languages.
